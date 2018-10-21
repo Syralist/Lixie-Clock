@@ -132,38 +132,27 @@ void digitalClockDisplay()
 {
   // digital clock display of the time
   String time_now;
-  String h;
-  String m;
-  String s;
   int Second = timeClient.getSeconds();
   int Minute = timeClient.getMinutes();
   int Hour = timeClient.getHours();
 
   if(Hour < 10){
-    h = "0"+String(Hour);
+    time_now += "0";
   }
-  else{
-    h = String(Hour);
-  }
-  if(Minute < 10){
-    m = "0"+String(Minute);
-  }
-  else{
-    m = String(Minute);
-  }
-  if(Second < 10){
-    s = "0"+String(Second);
-  }
-  else{
-    s = String(Second);
-  }
-
-  time_now += h;
+  time_now += String(Hour);
   time_now += ":";
-  time_now += m;
+
+  if(Minute < 10){
+    time_now += "0";
+  }
+  time_now += String(Minute);
+
   if(SIX_DIGIT == true){
     time_now += ":";
-    time_now += s;
+    if(Second < 10){
+      time_now += "0";
+    }
+    time_now += String(Second);
   }
 
   char buf[10];
