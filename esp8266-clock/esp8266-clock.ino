@@ -106,10 +106,11 @@ void loop()
 
   // update display every second if SIX_DIGIT is true, else once a minute
   unsigned long msNow = millis();
-  if((millis() - msLast >= DISPLAY_INTERVAL) || (millis() < msLast))
+  if((millis() - msLast >= DISPLAY_INTERVAL) || (millis() < msLast || NTPupdated))
   {
       msLast = millis();
       digitalClockDisplay();
+      NTPupdated = false;
   }
 
   // update time from ntp
@@ -119,11 +120,12 @@ void loop()
       NTPupdated = timeClient.update();
       if(CE.utcIsDST(timeClient.getEpochTime()))
       {
-          timeClient.setTimeOffset(7200); // daylight saving time: UTC+2
+          timeClient.setTimeOffset(2*3600); // daylight saving time: UTC+2
+          // timeClient.setTimeOffset(6*3600); // test with extra offset
       }
       else
       {
-          timeClient.setTimeOffset(3600); // normal time: UTC+1
+          timeClient.setTimeOffset(1*3600); // normal time: UTC+1
       }
   }
 }
@@ -136,6 +138,12 @@ void digitalClockDisplay()
   int Minute = timeClient.getMinutes();
   int Hour = timeClient.getHours();
 
+  /* Put the time into a string.
+  Leftmost zeros will not be displayed because the string will be converted 
+  to a number in the library. To work around this add a number unequal to zero
+  at the beginning of the string.
+  */
+  time_now += "1";  
   if(Hour < 10){
     time_now += "0";
   }
