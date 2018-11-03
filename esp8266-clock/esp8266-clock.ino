@@ -74,7 +74,7 @@ void setup()
   Serial.println(WiFi.localIP());
 
   // setup over the air programming
-  ArduinoOTA.setHostname("Wordclock12OTA");
+  ArduinoOTA.setHostname("LixieClockOTA");
   ArduinoOTA.onStart([]() {
           Serial.println("OTA Start");
           });
