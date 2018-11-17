@@ -1,11 +1,11 @@
 // Include Lixie Library
 #include "Lixie.h" 
 // setup number of pixels
-const bool SIX_DIGIT = true; // True if 6-digit clock with seconds
+const bool SIX_DIGIT = false; // True if 6-digit clock with seconds
 const int NUM_LIXIES = (SIX_DIGIT) ? 6 : 4; // 4 or 6 digits
-const int DISPLAY_INTERVAL = (SIX_DIGIT) ? 1000 : 60000; // update once a second or once a minute
+const int DISPLAY_INTERVAL = (SIX_DIGIT) ? 1000 : 6000; // update once a second or once a minute
 // setup pin number and create Lixie object
-const int DATA_PIN = 5;
+const int DATA_PIN = 11;
 Lixie lix(DATA_PIN, NUM_LIXIES);
 
 //---------------------------------------
