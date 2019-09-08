@@ -1,0 +1,59 @@
+esphome:
+  name: lixieclock
+  platform: ESP8266
+  board: d1_mini
+  includes:
+    - lixieclock_light.h
+  libraries:
+    - "Lixie"
+    - "FastLED"
+
+wifi:
+  ssid: !secret wifi-ssid
+  password: !secret wifi-password
+
+# Enable logging
+logger:
+  level: DEBUG
+  esp8266_store_log_strings_in_flash: False
+
+# Enable Home Assistant API
+api:
+  password: !secret esphome-password
+
+ota:
+  password: !secret esphome-password
+
+time:
+  - platform: homeassistant
+    id: HA_time
+
+light:
+  - platform: custom
+    lambda: |-
+      auto light_out = new LixieLightOutput();
+      App.register_component(light_out);
+      return {light_out};
+    
+    lights:
+      - name: "Lixie Clock"
+        id: "lixie_clock"
+
+i2c:
+  sda: 4
+  scl: 5
+  scan: True
+
+sensor:
+  - platform: bme280
+    temperature:
+      name: "Wohnzimmer Temperatur"
+      oversampling: 16x
+      filters:
+        - offset: -7.0
+    pressure:
+      name: "Wohnzimmer Luftdruck"
+    humidity:
+      name: "Wohnzimmer Feuchtigkeit"
+    address: 0x76
+    update_interval: 60s
